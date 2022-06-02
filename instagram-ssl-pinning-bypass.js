@@ -1,4 +1,5 @@
 'use strict'
+
 function hook_proxygen_SSLVerification(library){
     const functionName = "_ZN8proxygen15SSLVerification17verifyWithMetricsEbP17x509_store_ctx_stRKNSt6__ndk112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS0_31SSLFailureVerificationCallbacksEPNS0_31SSLSuccessVerificationCallbacksERKNS_15TimeUtilGenericINS3_6chrono12steady_clockEEERNS_10TraceEventE";
     
@@ -13,7 +14,7 @@ function hook_proxygen_SSLVerification(library){
         }
     });
 
-    console.log(`[*][*] Hooked function: ${functionName}`);
+    logger(`[*][*] Hooked function: ${functionName}`);
 }
 
 function hook_X509_verify_cert(library){
@@ -29,7 +30,7 @@ function hook_X509_verify_cert(library){
         }
     });
 
-    console.log(`[*][*] Hooked function: ${functionName}`);
+    logger(`[*][*] Hooked function: ${functionName}`);
 }
 
 async function waitForModule(moduleName){
@@ -44,12 +45,18 @@ async function waitForModule(moduleName){
     });
 }
 
-console.log("[*][*] Wating for libliger...");
+function logger(message)
+{
+	var Log = Java.use("android.util.Log");
+	console.log(message)
+	Log.v("SSL_PINNING_BYPASS", message);
+}
+
+
+logger("[*][*] Wating for libliger...");
 waitForModule("libliger.so").then((lib) => {
-    console.log(`[*][*] Found libliger at: ${lib.base}`)
+    logger(`[*][*] Found libliger at: ${lib.base}`)
     hook_proxygen_SSLVerification(lib);
     hook_X509_verify_cert(lib);
 });
-
-
 
