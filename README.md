@@ -1,6 +1,6 @@
 # Instagram SSL Pinning Bypass
 
-Use to bypass Instagram SSL pinning on Android devices.
+Bypass Instagram SSL pinning on Android devices.
 
 ## Patch apk (No Root Required)
 
