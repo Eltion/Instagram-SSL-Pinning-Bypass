@@ -6,6 +6,7 @@ Bypass Instagram SSL pinning on Android devices.
 
 Download latest pached apk:  
 + [instagram-v237.0.0.14.102-x86.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v237.0.0.14.102/instagram-v237.0.0.14.102-x86.apk)
++ [instagram-v237.0.0.14.102-x86_64.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v237.0.0.14.102/instagram-v237.0.0.14.102-x86_64.apk)
 
 [See all versions](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/)
 
