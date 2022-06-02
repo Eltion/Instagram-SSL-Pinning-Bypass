@@ -11,7 +11,7 @@ import argparse
 
 TEMP_FOLDER = os.getcwd() + "/temp"
 DEFAULT_OUTPUT_NAME = "app_patched.apk"
-SUPPORTED_ARCHS = ["x86"]
+SUPPORTED_ARCHS = ["x86","x86_64"]
 
 
 def inject_frida_gadget(libpath):
