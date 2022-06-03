@@ -54,10 +54,9 @@ function logger(message) {
 }
 
 
-logger("[*][*] Wating for libliger...");
+logger("[*][*] Waiting for libliger...");
 waitForModule("libliger.so").then((lib) => {
     logger(`[*][*] Found libliger at: ${lib.base}`)
     hook_proxygen_SSLVerification(lib);
     hook_X509_verify_cert(lib);
 });
-
