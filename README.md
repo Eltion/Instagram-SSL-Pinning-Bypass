@@ -1,6 +1,7 @@
 # Instagram SSL Pinning Bypass
 
-Bypass Instagram SSL pinning on Android devices.
+Bypass Instagram SSL pinning on Android devices.  
+Supported ABIs: `x86`, `x86_64`, `armeabi-v7a`, `arm64-v8a.apk`
 
 ## Patched APK (No Root)
 
@@ -10,22 +11,37 @@ Download the latest patched APK:
 
 [See all versions](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/)
 
-## Patch APK (No Root)
-
-With this method, you can create your own patched APK.
-
-1. Download instagram apk file.
-2. Install requirements > `pip install -r requirements.txt`
-3. Run script > `python patch_apk.py -i <input apk> -o <output apk>`
-4. Install output apk file
-
-
 ## Run using Frida (Requires Root)
 
 This method requires frida-tools and also frida-server running in the device
 ```
 frida -U -l .\instagram-ssl-pinning-bypass.js -f com.instagram.android --no-pause
 ```
+
+## Patch APK
+
+You can create your own patched APK. 
+
+
+### Requirements Linux (Ubuntu):
+1. Install java JRE: `sudo apt install default-jre`
+2. Install apksigner: `sudo apt install apksigner`
+3. Install zipalign: `sudo apt install zipalign`  
+
+Note: apksigner and zipalign can also be found in android sdk [build-tools](https://dl.google.com/android/repository/build-tools_r30.0.1-linux.zip)
+
+### Requirements Windows:
+1. Install java JRE
+2. Download [build-tools](https://dl.google.com/android/repository/build-tools_r30.0.1-windows.zip) and unzip
+3. Add unzip folder to path variable
+
+### Instructions
+
+1. Download instagram apk file.
+2. Install requirements > `pip install -r requirements.txt`
+3. Run script > `python patch_apk.py -i <input apk> -o <output apk>`
+
+After that an patched apk file should be generated.
 
 ## Intercept network traffic
 
@@ -42,7 +58,5 @@ To view the logcat run:
 ```
 adb logcat -s "SSL_PINNING_BYPASS:V"
 ```
-## TODO
-Add support for `armeabi-v7a` and `arm64-v8a`
 
-[#leftenter]()
+[#leftenter](#leftenter)

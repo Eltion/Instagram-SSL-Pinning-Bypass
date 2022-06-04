@@ -1,5 +1,6 @@
 import json
 import lzma
+import zipfile
 import lief
 from zipfile import ZipFile
 import shutil
@@ -7,11 +8,13 @@ import os
 import requests
 import sys
 import argparse
+from shutil import which
+import subprocess
 
 
 TEMP_FOLDER = os.getcwd() + "/temp"
 DEFAULT_OUTPUT_NAME = "app_patched.apk"
-SUPPORTED_ARCHS = ["x86","x86_64"]
+SUPPORTED_ARCHS = ["x86","x86_64","armeabi-v7a","arm64-v8a"]
 
 
 def inject_frida_gadget(libpath):
@@ -25,11 +28,49 @@ def create_temp_folder():
     delete_temp_folder()
     os.mkdir(TEMP_FOLDER)
 
+def is_tool_installed(name):
+    return which(name) is not None
+
+def check_tools():
+    if not is_tool_installed("keytool"):
+        print("keytool not installed or not in PATH")
+        return False
+    if not is_tool_installed("apksigner"):
+        print("apksigner not installed or not in PATH")
+        return False
+    if not is_tool_installed("zipalign"):
+        print("zipalign not installed or not in PATH")
+        return False
+    return True
+
+def create_keystore(keyalias, storepass):
+    print("Generating keystore...")
+    keystore_file = "{0}/release.keystore".format(TEMP_FOLDER)
+    subprocess.call(
+                'keytool -genkey -v -keystore {0} -alias {1} -keyalg RSA -keysize 2048 -validity 8000 -dname '
+                '"CN=com.leftenter.android, OU=ID, O=APK, L=Unknown, S=Unknown, C=XK" -storepass {2}'.format(keystore_file, keyalias, storepass),
+                shell=True)
+    shutil.copy(keystore_file, "release.keystore")
+    return keystore_file
+
+def sign_apk(apk, keystore, key_alias, store_pass):
+    print("Signing apk...")
+    subprocess.call(
+        "apksigner sign -ks {0} --ks-key-alias {1} --ks-pass pass:{2} {3}".format(keystore, key_alias, store_pass, apk),
+        shell=True
+    )
+
+def zip_align_apk(apk):
+    print("Running zipalign...")
+    tmp_apk = apk.replace(".apk","_tmp.apk")
+    shutil.move(apk, tmp_apk)
+    subprocess.call('zipalign 4 {0} {1}'.format(tmp_apk, apk), stderr=subprocess.STDOUT, shell=True)
+    os.remove(tmp_apk)
+    
 
 def delete_temp_folder():
     if(os.path.exists(TEMP_FOLDER)):
         shutil.rmtree(TEMP_FOLDER)
-
 
 def get_app_arch(apk):
     res = []
@@ -112,13 +153,14 @@ def download_frida_gadget(arch):
     response = requests.get(
         "https://api.github.com/repos/frida/frida/releases").text
     releases = json.loads(response)
-    latest_release = releases[0]
-    tag_name = latest_release["tag_name"]
-    frida_gadget_url = "https://github.com/frida/frida/releases/download/{0}/frida-gadget-{0}-android-{1}.so.xz".format(
-        tag_name, arch_config[arch])
-    archive_path = download_file(
-        frida_gadget_url, "firda-gadget-{0}-{1}.so.xz".format(tag_name, arch))
-    return extract_frida_gadget(archive_path, arch)
+    for release in releases:
+        tag_name = release["tag_name"]
+        for asset in release["assets"]:
+            if asset["name"] == "frida-gadget-{0}-android-{1}.so.xz".format(tag_name, arch_config[arch]):
+                frida_gadget_url = asset["browser_download_url"]
+                archive_path = download_file(
+                    frida_gadget_url, "firda-gadget-{0}-{1}.so.xz".format(tag_name, arch))
+                return extract_frida_gadget(archive_path, arch)
 
 
 def patch_apk(apk):
@@ -127,7 +169,7 @@ def patch_apk(apk):
     apk_out = ZipFile(os.path.join(TEMP_FOLDER, "new_apk.apk"), "w")
     files = apk_in.namelist()
     for file in files:
-        if not os.path.exists(os.path.join(TEMP_FOLDER, file)):
+        if not os.path.exists(os.path.join(TEMP_FOLDER, file)) and not file.startswith("META-INF\\"):
             apk_out.writestr(file, apk_in.read(file))
     apk_in.close()
     libfolder = os.path.join(TEMP_FOLDER, "lib")
@@ -135,7 +177,7 @@ def patch_apk(apk):
         for filename in files:
             filepath = os.path.join(root, filename)
             archname = os.path.relpath(filepath, TEMP_FOLDER)
-            apk_out.write(filepath, archname)
+            apk_out.write(filepath, archname, compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
     apk_out.close()
     return apk_out.filename
 
@@ -164,12 +206,27 @@ def main():
     parser = argparse.ArgumentParser(
         description='Remove ssl pining from instagram app')
     parser.add_argument("-i", "--input", type=str,
-                        help="Input apk file", required=True)
+                        help="Input apk file.", required=True)
     parser.add_argument("-o", "--output", type=str,
-                        help="Output apk file", default=DEFAULT_OUTPUT_NAME)
+                        help="Output apk file.", default=DEFAULT_OUTPUT_NAME)
+    parser.add_argument("--keystore", type=str,
+                        help="Use your own keystore for signing.")
+    parser.add_argument("--keyalias", type=str,
+                        help="Key alias", default="PATCH")
+    parser.add_argument("--storepass", type=str,
+                        help="Password for keystore", default="password")
+    
+
     args = parser.parse_args()
     inputfile = args.input
     outputfile = args.output
+    keyalias = args.keyalias
+    storepass = args.storepass
+    keystore = None
+
+    if not check_tools():
+        exit(1)
+    
     create_temp_folder()
     temp_apk = copy_apk_to_temp_folder(inputfile)
 
@@ -177,6 +234,12 @@ def main():
     if len(archs) == 0:
         print("Current ABI is not supported!")
         exit(1)
+    
+    if(args.keystore):
+        keystore = args.keystore
+    else:
+        keystore = create_keystore(keyalias, storepass)
+
     config_file = create_config_file()
     print("Created config_file at: ", config_file)
     script = copy_script_temp()
@@ -190,6 +253,8 @@ def main():
         shutil.copy(config_file, arch_folder)
         shutil.copy(script, arch_folder)
     output = patch_apk(temp_apk)
+    zip_align_apk(output)
+    sign_apk(output, keystore, keyalias, storepass)
     outputpath = shutil.move(output, outputfile)
     delete_temp_folder()
     print("Sucessful. Patched file at:", outputpath)

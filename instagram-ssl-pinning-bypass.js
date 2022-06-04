@@ -33,13 +33,13 @@ function hook_X509_verify_cert(library) {
     logger(`[*][*] Hooked function: ${functionName}`);
 }
 
-async function waitForModule(moduleName) {
+function waitForModule(moduleName) {
     return new Promise(resolve => {
         const interval = setInterval(() => {
-            const libliger = Process.findModuleByName(moduleName);
-            if (libliger != null) {
+            const module = Process.findModuleByName(moduleName);
+            if (module != null) {
                 clearInterval(interval);
-                resolve(libliger);
+                resolve(module);
             }
         }, 300);
     });
