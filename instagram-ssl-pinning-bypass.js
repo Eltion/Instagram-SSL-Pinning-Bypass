@@ -3,34 +3,38 @@
 function hook_proxygen_SSLVerification(library) {
     const functionName = "_ZN8proxygen15SSLVerification17verifyWithMetricsEbP17x509_store_ctx_stRKNSt6__ndk112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS0_31SSLFailureVerificationCallbacksEPNS0_31SSLSuccessVerificationCallbacksERKNS_15TimeUtilGenericINS3_6chrono12steady_clockEEERNS_10TraceEventE";
 
-    const f = Module.getExportByName(library.name, functionName);
-    if (!f) {
-        console.error(`[*][*] Could not find function: ${functionName}`);
-        return;
-    }
-    Interceptor.attach(f, {
-        onLeave: function (retvalue) {
-            retvalue.replace(1);
-        }
-    });
+    try {
+        const f = Module.getExportByName(library.name, functionName);
 
-    logger(`[*][*] Hooked function: ${functionName}`);
+        Interceptor.attach(f, {
+            onLeave: function (retvalue) {
+                retvalue.replace(1);
+            }
+        });
+        logger(`[*][*] Hooked function: ${functionName}`);
+    } catch (err) {
+        logger(`[*][*] Failed to hook function: ${functionName}`);
+        logger(err.toString())
+    }
 }
 
 function hook_X509_verify_cert(library) {
     const functionName = "X509_verify_cert";
-    const f = Module.getExportByName(library.name, functionName);
-    if (!f) {
-        console.error(`[*][*] Could not find function: ${functionName}`);
-        return;
-    }
-    Interceptor.attach(f, {
-        onLeave: function (retvalue) {
-            retvalue.replace(1);
-        }
-    });
+    try {
+        const f = Module.getExportByName(library.name, functionName);
+        Interceptor.attach(f, {
+            onLeave: function (retvalue) {
+                retvalue.replace(1);
+            }
+        });
 
-    logger(`[*][*] Hooked function: ${functionName}`);
+        logger(`[*][*] Hooked function: ${functionName}`);
+
+    } catch (err) {
+        logger(`[*][*] Failed to hook function: ${functionName}`);
+        logger(err.toString())
+    }
+
 }
 
 function waitForModule(moduleName) {
@@ -49,7 +53,7 @@ function logger(message) {
     console.log(message);
     Java.perform(function () {
         var Log = Java.use("android.util.Log");
-        Log.v("SSL_PINNING_BYPASS", message);
+        Log.v("INSTAGRAM_SSL_PINNING_BYPASS", message);
     });
 }
 

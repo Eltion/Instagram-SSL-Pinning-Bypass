@@ -58,7 +58,7 @@ Now you should be able to see the network traffic.
 ## View script logs
 To view the logcat run:
 ```
-adb logcat -s "SSL_PINNING_BYPASS:V"
+adb logcat -s "INSTAGRAM_L_PINNING_BYPASS:V"
 ```
 
 [#leftenter](#leftenter)
