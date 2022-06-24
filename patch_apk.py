@@ -64,7 +64,7 @@ def zip_align_apk(apk):
     print("Running zipalign...")
     tmp_apk = apk.replace(".apk","_tmp.apk")
     shutil.move(apk, tmp_apk)
-    subprocess.call('zipalign 4 {0} {1}'.format(tmp_apk, apk), stderr=subprocess.STDOUT, shell=False)
+    subprocess.call('zipalign -p -f 4 {0} {1}'.format(tmp_apk, apk), stderr=subprocess.STDOUT, shell=False)
     os.remove(tmp_apk)
     
 
@@ -169,8 +169,10 @@ def patch_apk(apk):
     apk_out = ZipFile(os.path.join(TEMP_FOLDER, "new_apk.apk"), "w")
     files = apk_in.infolist()
     for file in files:
-        if not os.path.exists(os.path.join(TEMP_FOLDER, file.filename)) and not file.filename.startswith("META-INF\\"):
+        if not os.path.exists(os.path.join(TEMP_FOLDER, file.filename)) and not file.filename.startswith("META-INF\\") and not file.filename.startswith("resources.arsc"):
             apk_out.writestr(file.filename, apk_in.read(file.filename), compress_type=file.compress_type, compresslevel=9)
+        if not os.path.exists(os.path.join(TEMP_FOLDER, file.filename)) and file.filename.startswith("resources.arsc"):
+            apk_out.writestr(file.filename, apk_in.read(file.filename), compress_type=zipfile.ZIP_STORED, compresslevel=0)
     apk_in.close()
     libfolder = os.path.join(TEMP_FOLDER, "lib")
     for (root, _, files) in os.walk(libfolder, topdown=True):
