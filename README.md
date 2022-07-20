@@ -2,15 +2,15 @@
 
 Bypass Instagram SSL pinning on Android devices.  
 Supported ABIs: `x86`, `x86_64`, `armeabi-v7a`, `arm64-v8a`  
-Latest version: `v243.0.0.16.111`
+Latest version: `v244.0.0.17.110`
 
 ## Patched APK (No Root)
 
 Download the latest patched APK: 
-+ [instagram-v243.0.0.16.111-x86.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v243.0.0.16.111/instagram-v243.0.0.16.111-x86.apk)
-+ [instagram-v243.0.0.16.111-x86_64.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v243.0.0.16.111/instagram-v243.0.0.16.111-x86_64.apk)
-+ [instagram-v243.0.0.16.111-armeabi-v7a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v243.0.0.16.111/instagram-v243.0.0.16.111-armeabi-v7a.apk)
-+ [instagram-v243.0.0.16.111-arm64-v8a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v243.0.0.16.111/instagram-v243.0.0.16.111-arm64-v8a.apk)
++ [instagram-v244.0.0.17.110-x86.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v244.0.0.17.110/instagram-v244.0.0.17.110-x86.apk)
++ [instagram-v244.0.0.17.110-x86_64.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v244.0.0.17.110/instagram-v244.0.0.17.110-x86_64.apk)
++ [instagram-v244.0.0.17.110-armeabi-v7a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v244.0.0.17.110/instagram-v244.0.0.17.110-armeabi-v7a.apk)
++ [instagram-v244.0.0.17.110-arm64-v8a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v244.0.0.17.110/instagram-v244.0.0.17.110-arm64-v8a.apk)
 
 [See all versions](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/)
 
