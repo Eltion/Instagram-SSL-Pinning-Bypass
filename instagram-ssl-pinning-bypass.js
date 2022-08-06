@@ -64,3 +64,13 @@ waitForModule("libliger.so").then((lib) => {
     hook_proxygen_SSLVerification(lib);
     hook_X509_verify_cert(lib);
 });
+
+//Universal Android SSL Pinning Bypass #2
+Java.perform(function () {
+    var array_list = Java.use("java.util.ArrayList");
+    var ApiClient = Java.use('com.android.org.conscrypt.TrustManagerImpl');
+    ApiClient.checkTrustedRecursive.implementation = function(a1,a2,a3,a4,a5,a6) {
+        var k = array_list.$new(); 
+        return k;
+    }
+});
