@@ -7,10 +7,10 @@ assignees: Eltion
 
 ---
 
-**Describe the bug**
+**Describe the bug**  
 A clear and concise description of what the bug is.
 
-**Method**
+**Method**  
 Patched APK or Frida
 
 **App info**
@@ -26,7 +26,7 @@ mitmproxy: v8.1.1
 brup: v2022.5.2
 
 **Logs**
-Frida or logcat logs, screenshots
+Frida or logcat logs, screenshots, mitmproxy event logs, Brup event log.
 
 **Additional context**
 Add any other context about the problem here.
