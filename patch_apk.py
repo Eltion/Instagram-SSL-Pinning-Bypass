@@ -88,7 +88,7 @@ def get_app_arch(apk):
 
 
 def extract_libs_for_apk(apk, arch):
-    libs = ["libelf.so","libfb.so"]
+    libs = ["libmemalign16.so","libfb.so"]
     with ZipFile(apk) as zip_file:
         namelist = zip_file.namelist()
         for lib in libs:
