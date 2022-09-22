@@ -59,6 +59,8 @@ You can use a tool like mitmproxy or Burp Suite to intercept the network.
 
 Now you should be able to see the network traffic.
 
+### [Capture traffic using Brup(Wiki)](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/wiki/Capture-packets-using-Brup-Suite)
+
 ### Video tutorial using mitmproxy
 https://user-images.githubusercontent.com/18504798/177385493-5fd557bd-cb59-4342-b6d8-8b70262e6c06.mp4
 
