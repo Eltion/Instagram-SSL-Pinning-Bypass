@@ -63,3 +63,32 @@ Java.perform(function () {
         logger("[*][-] Failed to hook checkTrustedRecursive")
     }
 });
+
+Java.perform(function () {
+    try {
+        const x509TrustManager = Java.use("javax.net.ssl.X509TrustManager");
+        const sSLContext = Java.use("javax.net.ssl.SSLContext");
+        const TrustManager = Java.registerClass({
+            implements: [x509TrustManager],
+            methods: {
+                checkClientTrusted(chain, authType) {
+                },
+                checkServerTrusted(chain, authType) {
+                },
+                getAcceptedIssuers() {
+                    return [];
+                },
+            },
+            name: "com.leftenter.tiktok",
+        });
+        const TrustManagers = [TrustManager.$new()];
+        const SSLContextInit = sSLContext.init.overload(
+            "[Ljavax.net.ssl.KeyManager;", "[Ljavax.net.ssl.TrustManager;", "java.security.SecureRandom");
+        SSLContextInit.implementation = function (keyManager, trustManager, secureRandom) {
+            SSLContextInit.call(this, keyManager, TrustManagers, secureRandom);
+        };
+        logger("[*][+] Hooked SSLContextInit")
+    } catch (e) {
+        logger("[*][-] Failed to hook SSLContextInit")
+    }
+})
