@@ -1,5 +1,23 @@
 'use strict'
 
+//Disable HTTP3. Currently will only work on verion 256.0.0.18.105
+Java.perform(function () {
+    try {
+        const X01p = Java.use("X.01s") // Use X.01p for arm64
+        X01p.A01.implementation = function (...args) {
+            const res = this.A01(...args);
+            if (args[2] == 36320124650655855) {
+                logger("[*][+] Forced HTTP2")
+                return Java.use("java.lang.Boolean").$new(false);
+            }
+            return res;
+        }
+    } catch(e) {
+        logger("[*][+] Failed to force HTTP2")
+    }
+})
+
+
 function hook_proxygen_SSLVerification(library) {
     const functionName = "_ZN8proxygen15SSLVerification17verifyWithMetricsEbP17x509_store_ctx_stRKNSt6__ndk112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS0_31SSLFailureVerificationCallbacksEPNS0_31SSLSuccessVerificationCallbacksERKNS_15TimeUtilGenericINS3_6chrono12steady_clockEEERNS_10TraceEventE";
 
