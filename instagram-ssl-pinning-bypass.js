@@ -1,6 +1,6 @@
 'use strict'
 
-//Disable HTTP3. Currently will only work on verion 256.0.0.18.105
+//Disable HTTP3. Currently will only work on verion 260.0.0.23.115
 Java.perform(function () {
     try {
         const X01p = Java.use("X.01s") // Use X.01p for arm64
