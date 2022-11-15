@@ -1,5 +1,32 @@
 'use strict'
 
+//https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/issues/19
+function disableHTTP3() {
+    try {
+        Java.perform(() => {
+            const File = Java.use("java.io.File");
+            const ActivityThread = Java.use('android.app.ActivityThread');
+            Java.scheduleOnMainThread(() => {
+                var context = ActivityThread.currentApplication().getApplicationContext();
+                const mobileconfigDir = context.getFilesDir().getAbsolutePath().toString() + "/mobileconfig";
+                const dir = File.$new(mobileconfigDir);
+                for (const session of dir.listFiles()) {
+                    if (/\d+\.data$/.test(session.getAbsolutePath())) {
+                        if (session.listFiles().length > 0)
+                            logger("[*][+] Deleting config files to disable HTTP3. Restart App.")
+                        for (const conf of session.listFiles()) {
+                            conf.delete();
+                        }
+                    }
+                }
+            });
+        });
+    } catch (e) {
+        logger("[*][-] Failed to disable HTTP/3")
+    }
+}
+
+
 function hook_proxygen_SSLVerification(library) {
     const functionName = "_ZN8proxygen15SSLVerification17verifyWithMetricsEbP17x509_store_ctx_stRKNSt6__ndk112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS0_31SSLFailureVerificationCallbacksEPNS0_31SSLSuccessVerificationCallbacksERKNS_15TimeUtilGenericINS3_6chrono12steady_clockEEERNS_10TraceEventE";
 
@@ -45,6 +72,7 @@ waitForModule("libliger.so").then((lib) => {
     hook_proxygen_SSLVerification(lib);
 });
 
+disableHTTP3();
 //Universal Android SSL Pinning Bypass #2
 Java.perform(function () {
     try {
