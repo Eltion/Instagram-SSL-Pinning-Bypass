@@ -143,7 +143,7 @@ def extract_frida_gadget(archive_path, arch):
     return filepath
 
 
-def download_frida_gadget(arch):
+def download_frida_gadget(arch, version):
     arch_config = {
         "x86":"x86",
         "x86_64":"x86_64",
@@ -155,13 +155,15 @@ def download_frida_gadget(arch):
     releases = json.loads(response)
     for release in releases:
         tag_name = release["tag_name"]
+        if(version and not tag_name == version):
+            continue
         for asset in release["assets"]:
             if asset["name"] == "frida-gadget-{0}-android-{1}.so.xz".format(tag_name, arch_config[arch]):
                 frida_gadget_url = asset["browser_download_url"]
                 archive_path = download_file(
                     frida_gadget_url, "firda-gadget-{0}-{1}.so.xz".format(tag_name, arch))
                 return extract_frida_gadget(archive_path, arch)
-
+    raise Exception("Frida version not found!")
 
 def patch_apk(apk):
     print("Rebuilding apk file...")
@@ -215,6 +217,7 @@ def main():
                         help="Key alias", default="PATCH")
     parser.add_argument("--storepass", type=str,
                         help="Password for keystore", default="password")
+    parser.add_argument("--frida_version", type=str)
     
 
     args = parser.parse_args()
@@ -223,6 +226,7 @@ def main():
     keyalias = args.keyalias
     storepass = args.storepass
     keystore = None
+    frida_version = args.frida_version
 
     if not check_tools():
         exit(1)
@@ -248,7 +252,7 @@ def main():
         print("\nPatching for", arch)
         nativelib = extract_libs_for_apk(temp_apk, arch)
         arch_folder = os.path.join(TEMP_FOLDER, "lib", arch)
-        download_frida_gadget(arch)
+        download_frida_gadget(arch, frida_version)
         inject_frida_gadget(nativelib)
         shutil.copy(config_file, arch_folder)
         shutil.copy(script, arch_folder)
