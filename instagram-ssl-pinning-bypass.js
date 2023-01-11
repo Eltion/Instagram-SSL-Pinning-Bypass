@@ -72,7 +72,7 @@ waitForModule("libliger.so").then((lib) => {
     hook_proxygen_SSLVerification(lib);
 });
 
-disableHTTP3();
+//disableHTTP3();
 //Universal Android SSL Pinning Bypass #2
 Java.perform(function () {
     try {
