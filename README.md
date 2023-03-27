@@ -9,6 +9,7 @@ If you like this project:
 
 **Bitcoin**: bc1q6kvvun3cfm5kadesxflntszp8z9lqesra35law  
 **Ethereum**: 0x47633Ef59b0F765b7f8047b0A56230cfeBB34027
+**USDC (ERC20)**: 0x47633Ef59b0F765b7f8047b0A56230cfeBB34027
 ## Patched APK (No Root)
 
 Download the latest patched APK: 
