@@ -1,2 +1,2 @@
-lief==0.12.1
-requests==2.27.1
+lief==0.13.2
+requests==2.31.0
