@@ -1,30 +1,46 @@
 # Instagram SSL Pinning Bypass
 
-Bypass Instagram SSL pinning on Android devices.  
+Bypass Instagram and Threads SSL pinning on Android devices.  
+
 Supported ABIs: `x86`, `x86_64`, `armeabi-v7a`, `arm64-v8a`  
-Latest version: `v275.0.0.27.98`
+Latest Instagram version: `v275.0.0.27.98`  
+Latest Threads version: `v289.0.0.77.109`  
 
 If you like this project:  
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/eltimusa4q)
 
 **Bitcoin**: bc1q6kvvun3cfm5kadesxflntszp8z9lqesra35law  
-**Ethereum**: 0x47633Ef59b0F765b7f8047b0A56230cfeBB34027
-**USDC (ERC20)**: 0x47633Ef59b0F765b7f8047b0A56230cfeBB34027
+**Ethereum**: 0x47633Ef59b0F765b7f8047b0A56230cfeBB34027  
+**USDC**: 0x47633Ef59b0F765b7f8047b0A56230cfeBB34027  
+**USDT**: 0x47633Ef59b0F765b7f8047b0A56230cfeBB34027  
+
 ## Patched APK (No Root)
 
-Download the latest patched APK: 
+Download the latest Instagram patched APK: 
 + [instagram-v275.0.0.27.98-x86.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v275.0.0.27.98/instagram-v275.0.0.27.98-x86.apk)
 + [instagram-v275.0.0.27.98-x86_64.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v275.0.0.27.98/instagram-v275.0.0.27.98-x86_64.apk)
 + [instagram-v275.0.0.27.98-armeabi-v7a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v275.0.0.27.98/instagram-v275.0.0.27.98-armeabi-v7a.apk)
-+ [instagram-v275.0.0.27.98-arm64-v8a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v275.0.0.27.98/instagram-v275.0.0.27.98-arm64-v8a.apk)
++ [instagram-v275.0.0.27.98-arm64-v8a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v275.0.0.27.98/instagram-v275.0.0.27.98-arm64-v8a.apk)  
+
+Download the latest Threads patched APK: 
++ [threads-v289.0.0.77.109-x86.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v289.0.0.77.109-t/threads-v289.0.0.77.109-x86.apk)
++ [threads-v289.0.0.77.109-x86_64.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v289.0.0.77.109-t/threads-v289.0.0.77.109-x86_64.apk)
++ [threads-v289.0.0.77.109-armeabi-v7a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v289.0.0.77.109-t/threads-v289.0.0.77.109-armeabi-v7a.apk)
++ [threads-v289.0.0.77.109-arm64-v8a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v289.0.0.77.109-t/threads-v289.0.0.77.109-arm64-v8a.apk)  
 
 [See all versions](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/)
 
 ## Run using Frida (Requires Root)
 
-This method requires frida-tools and also frida-server running in the device
+This method requires frida-tools and also frida-server running in the device  
+
+Instagram
 ```
-frida -U -l .\instagram-ssl-pinning-bypass.js -f com.instagram.android --no-pause
+frida -U -l .\instagram-ssl-pinning-bypass.js -f com.instagram.android 
+```
+Threads  
+```
+frida -U -l .\instagram-ssl-pinning-bypass.js -f com.instagram.barcelona 
 ```
 
 ## Patch APK
