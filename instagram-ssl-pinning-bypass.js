@@ -62,7 +62,7 @@ function waitForModule(moduleName) {
 
 function logger(message) {
     console.log(message);
-    Java.perform(function () {
+    Java.perform(function() {
         var Log = Java.use("android.util.Log");
         Log.v("INSTAGRAM_SSL_PINNING_BYPASS", message);
     });
@@ -77,25 +77,25 @@ waitForModule("libliger-common.so").then((lib) => {
 
 //disableHTTP3();
 //Universal Android SSL Pinning Bypass #2
-Java.perform(function () {
+Java.perform(function() {
     try {
         var array_list = Java.use("java.util.ArrayList");
         var ApiClient = Java.use('com.android.org.conscrypt.TrustManagerImpl');
         if (ApiClient.checkTrustedRecursive) {
             logger("[*][+] Hooked checkTrustedRecursive")
-            ApiClient.checkTrustedRecursive.implementation = function (a1, a2, a3, a4, a5, a6) {
+            ApiClient.checkTrustedRecursive.implementation = function(a1, a2, a3, a4, a5, a6) {
                 var k = array_list.$new();
                 return k;
             }
         } else {
             logger("[*][-] checkTrustedRecursive not Found")
         }
-    } catch(e) {
+    } catch (e) {
         logger("[*][-] Failed to hook checkTrustedRecursive")
     }
 });
 
-Java.perform(function () {
+Java.perform(function() {
     try {
         const x509TrustManager = Java.use("javax.net.ssl.X509TrustManager");
         const sSLContext = Java.use("javax.net.ssl.SSLContext");
@@ -110,12 +110,12 @@ Java.perform(function () {
                     return [];
                 },
             },
-            name: "com.leftenter.tiktok",
+            name: "com.leftenter.instagram",
         });
         const TrustManagers = [TrustManager.$new()];
         const SSLContextInit = sSLContext.init.overload(
             "[Ljavax.net.ssl.KeyManager;", "[Ljavax.net.ssl.TrustManager;", "java.security.SecureRandom");
-        SSLContextInit.implementation = function (keyManager, trustManager, secureRandom) {
+        SSLContextInit.implementation = function(keyManager, trustManager, secureRandom) {
             SSLContextInit.call(this, keyManager, TrustManagers, secureRandom);
         };
         logger("[*][+] Hooked SSLContextInit")
