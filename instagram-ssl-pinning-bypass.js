@@ -28,19 +28,22 @@ function disableHTTP3() {
 
 
 function hook_proxygen_SSLVerification(library) {
-    const functionName = "_ZN8proxygen15SSLVerification17verifyWithMetricsEbP17x509_store_ctx_stRKNSt6__ndk112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEEPNS0_31SSLFailureVerificationCallbacksEPNS0_31SSLSuccessVerificationCallbacksERKNS_15TimeUtilGenericINS3_6chrono12steady_clockEEERNS_10TraceEventE";
+    const verifyFunction = library.enumerateExports().find(el => el.name.includes("verifyWithMetrics"));
+
+    if (!verifyFunction) {
+        logger(`[*][-] Failed to find verifyWithMetrics function`);
+        return;
+    }
 
     try {
-        const f = Module.getExportByName(library.name, functionName);
-
-        Interceptor.attach(f, {
-            onLeave: function (retvalue) {
+        Interceptor.attach(verifyFunction.address, {
+            onLeave: function(retvalue) {
                 retvalue.replace(1);
             }
         });
-        logger(`[*][+] Hooked function: ${functionName}`);
+        logger(`[*][+] Hooked function: ${verifyFunction.name}`);
     } catch (err) {
-        logger(`[*][-] Failed to hook function: ${functionName}`);
+        logger(`[*][-] Failed to hook function: ${verifyFunction.name}`);
         logger(err.toString())
     }
 }
@@ -66,9 +69,9 @@ function logger(message) {
 }
 
 
-logger("[*][*] Waiting for libliger...");
-waitForModule("libliger.so").then((lib) => {
-    logger(`[*][+] Found libliger at: ${lib.base}`)
+logger("[*][*] Waiting for libliger-common...");
+waitForModule("libliger-common.so").then((lib) => {
+    logger(`[*][+] Found libliger-common at: ${lib.base}`)
     hook_proxygen_SSLVerification(lib);
 });
 
