@@ -1,31 +1,20 @@
 'use strict'
 
-//https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/issues/19
-function disableHTTP3() {
+function disableTigon() {
     try {
         Java.perform(() => {
-            const File = Java.use("java.io.File");
-            const ActivityThread = Java.use('android.app.ActivityThread');
-            Java.scheduleOnMainThread(() => {
-                var context = ActivityThread.currentApplication().getApplicationContext();
-                const mobileconfigDir = context.getFilesDir().getAbsolutePath().toString() + "/mobileconfig";
-                const dir = File.$new(mobileconfigDir);
-                for (const session of dir.listFiles()) {
-                    if (/\d+\.data$/.test(session.getAbsolutePath())) {
-                        if (session.listFiles().length > 0)
-                            logger("[*][+] Deleting config files to disable HTTP3. Restart App.")
-                        for (const conf of session.listFiles()) {
-                            conf.delete();
-                        }
-                    }
-                }
-            });
+            let IGTigonConfig = Java.use("com.instagram.service.tigon.configs.IGTigonConfig");
+            IGTigonConfig.$init.implementation = function() {
+                this.$init();
+                this.isTigonEnabled.value = false;
+                logger("[*][+] Disable tigon")
+            };
         });
+        logger("[*][+] Hooked to IGTigonConfig.$init")
     } catch (e) {
-        logger("[*][-] Failed to disable HTTP/3")
+        logger("[*][-] Failed to IGTigonConfig.$init")
     }
 }
-
 
 function hook_proxygen_SSLVerification(library) {
     const verifyFunction = library.enumerateExports().find(el => el.name.includes("verifyWithMetrics"));
@@ -69,13 +58,13 @@ function logger(message) {
 }
 
 
-logger("[*][*] Waiting for libliger-common...");
-waitForModule("libliger-common.so").then((lib) => {
-    logger(`[*][+] Found libliger-common at: ${lib.base}`)
+logger("[*][*] Waiting for libstartup.so...");
+waitForModule("libstartup.so").then((lib) => {
+    logger(`[*][+] Found libstartup.so at: ${lib.base}`)
     hook_proxygen_SSLVerification(lib);
 });
 
-//disableHTTP3();
+disableTigon();
 //Universal Android SSL Pinning Bypass #2
 Java.perform(function() {
     try {
