@@ -3,7 +3,7 @@
 Bypass Instagram and Threads SSL pinning on Android devices.  
 
 Supported ABIs: `x86`, `x86_64`, `armeabi-v7a`, `arm64-v8a`  
-Latest Instagram version: `v275.0.0.27.98`  
+Latest Instagram version: `v361.0.0.46.88`  
 Latest Threads version: `v289.0.0.77.109`  
 
 If you like this project:  
@@ -17,10 +17,10 @@ If you like this project:
 ## Patched APK (No Root)
 
 Download the latest Instagram patched APK: 
-+ [instagram-v275.0.0.27.98-x86.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v275.0.0.27.98/instagram-v275.0.0.27.98-x86.apk)
-+ [instagram-v275.0.0.27.98-x86_64.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v275.0.0.27.98/instagram-v275.0.0.27.98-x86_64.apk)
-+ [instagram-v275.0.0.27.98-armeabi-v7a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v275.0.0.27.98/instagram-v275.0.0.27.98-armeabi-v7a.apk)
-+ [instagram-v275.0.0.27.98-arm64-v8a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v275.0.0.27.98/instagram-v275.0.0.27.98-arm64-v8a.apk)  
++ [instagram-v361.0.0.46.88-x86.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v361.0.0.46.88/instagram-v361.0.0.46.88-x86.apk)
++ [instagram-v361.0.0.46.88-x86_64.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v361.0.0.46.88/instagram-v361.0.0.46.88-x86_64.apk)
++ [instagram-v361.0.0.46.88-armeabi-v7a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v361.0.0.46.88/instagram-v361.0.0.46.88-armeabi-v7a.apk)
++ [instagram-v361.0.0.46.88-arm64-v8a.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v361.0.0.46.88/instagram-v361.0.0.46.88-arm64-v8a.apk)  
 
 Download the latest Threads patched APK: 
 + [threads-v289.0.0.77.109-x86.apk](https://github.com/Eltion/Instagram-SSL-Pinning-Bypass/releases/download/v289.0.0.77.109-t/threads-v289.0.0.77.109-x86.apk)
