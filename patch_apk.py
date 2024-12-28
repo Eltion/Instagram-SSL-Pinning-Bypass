@@ -275,7 +275,8 @@ def download_frida_gadget(arch, version):
     arch_config = {
         "armeabi-v7a":"arm",
         "arm64-v8a": "arm64",
-        "x86": "x86"
+        "x86": "x86",
+        "x86_64": "x86_64"
     }
     response = requests.get(
         "https://api.github.com/repos/frida/frida/releases").text
