@@ -47,6 +47,18 @@ frida -U -l .\instagram-ssl-pinning-bypass.js -f com.instagram.barcelona
 
 You can create your own patched APK. 
 
+### Patch using docker image
+1. Install docker: [https://docs.docker.com/desktop/](https://docs.docker.com/desktop/)
+2. Pull docker image: `docker pull ghcr.io/eltion/instagram-ssl-pinning-bypass:latest`  
+3. Run docker image in the same folder where the apk is located
+
+```bash
+#Linux, MacOS, Windows (PowerShell)
+docker run --rm -v "$(pwd):/app" ghcr.io/eltion/instagram-ssl-pinning-bypass:latest -i <input apk> -o <output apk>
+
+#Windows cmd
+docker run --rm -v "%cd%:/app" ghcr.io/eltion/instagram-ssl-pinning-bypass:latest -i <input apk> -o <output apk>
+```
 
 ### Requirements Linux (Ubuntu):
 1. Install java JRE: `sudo apt install default-jre`
