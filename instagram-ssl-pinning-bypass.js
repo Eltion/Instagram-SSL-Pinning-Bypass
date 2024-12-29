@@ -7,6 +7,7 @@ function disableTigon() {
             IGTigonConfig.$init.implementation = function() {
                 this.$init();
                 this.isTigonEnabled.value = false;
+                this.isMnsEnabled.value = false;
                 logger("[*][+] Disable tigon")
             };
         });
